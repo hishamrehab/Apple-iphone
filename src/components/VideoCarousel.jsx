@@ -5,7 +5,7 @@ const VideoCarousel = () => {
     const videoRef = useRef([]);
     const videoSpanRef = useRef([]);
     const videoDivRef = useRef([]);
-
+    const [loadedDate, setLoadedDate] = useState([]);
     const [video, setVideo] = useState({
         isEnd: false,
         startPlay: false,
@@ -18,8 +18,35 @@ const VideoCarousel = () => {
 
 
     useEffect(() => {
+        if (loadedDate.length > 3) {
+            if (!isPlaying) {
+                videoRef.current[videoId].pause();
+            } else {
+                startPlay && videoRef.current[videoId].play();
+
+            }
+        }
+
+    }, [startPlay, videoId, isPlaying, loadedDate])
+
+    useEffect(() => {
         const currentProgress = 0;
-        let span = videoSpanRef.current
+        let span = videoSpanRef.current;
+
+        if (span[videoId]) {
+            // animate  the progress of the video
+            let anim = gsap.to(span[videoId], {
+                onUpdate: () => {
+
+                },
+                onComplete: () => {
+
+                }
+
+            })
+
+
+        }
 
 
     }, [videoId, startPlay])
@@ -31,7 +58,11 @@ const VideoCarousel = () => {
                     <div key={list.id} id='slider' className='sm:pr-20 pr-10'>
                         <div className='video-carousel_container'>
                             <div className='w-full h-full flex-center rounded-3xl overflow-hidden bg-black'>
-                                <video id='video' playsInline={true} preload='auto' muted>
+                                <video id='video' playsInline={true} preload='auto' muted ref={(el) => videoRef.current[i] = el} onPlay={() => {
+                                    setVideo((prevVideo) => ({
+                                        ...prevVideo, isPlaying: true
+                                    }))
+                                }}>
                                     <source src={list.video} type='video/mp4' />
                                 </video>
                             </div>
@@ -43,6 +74,15 @@ const VideoCarousel = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+            <div className='relative flex-center mt-10'>
+                <div className='flex-center py-5 px-7 bg-gray-300 backdrop-blur rounded-full '>
+
+                    {videoRef.current.map((_), i) => (
+                    <span key={i}></span>
+                    )}
+                </div>
+
             </div>
         </>
     )

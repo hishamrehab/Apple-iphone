@@ -101,7 +101,6 @@ const VideoCarousel = () => {
                     hightlightsSlides[videoId].videoDuration
                 );
             };
-
             if (isPlaying) {
                 // ticker to update the progress bar
                 gsap.ticker.add(animUpdate);

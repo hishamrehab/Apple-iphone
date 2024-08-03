@@ -8,7 +8,6 @@ import Model from "./components/Model"
 
 function App() {
 
-
   return (
     <main className='bg-black'>
       <Navbar />
